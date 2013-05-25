@@ -12,9 +12,20 @@ apt-get install --yes $(check-language-support)
 oem-config-prepare --quiet
 wget ${DI_REPO}/sources.list -O /etc/apt/sources.list
 
+mkdir -p  "/etc/apt/sources.list.d"
+
+# google chrome
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+
 # node.js ppa
 apt-add-repository -y ppa:chris-lea/node.js 
 
 apt-get update
-
+# -----------------------------------------------------------
+# install pkgs
+# -----------------------------------------------------------
 apt-get install -y nodejs npm
+apt-get install -y google-chrome-stable google-talkplugin
+
+
