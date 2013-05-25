@@ -20,12 +20,15 @@ sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /et
 
 # node.js ppa
 apt-add-repository -y ppa:chris-lea/node.js 
+# sublime2
+sudo add-apt-repository ppa:webupd8team/sublime-text-2
 
 apt-get update
 # -----------------------------------------------------------
 # install pkgs
 # -----------------------------------------------------------
 apt-get install -y nodejs npm
-apt-get install -y google-chrome-stable google-talkplugin
+apt-get install -y google-chrome-stable
+sudo apt-get install sublime-text
 
 
