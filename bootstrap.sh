@@ -1,16 +1,22 @@
 #!/bin/bash
-#sudo add-apt-repository -y ppa:chris-lea/node.js 
+[ -f /var/log/done ] && exit 0
+
+add-apt-repository -y ppa:chris-lea/node.js
+sudo apt-get update
 sudo apt-get -y upgrade
-#sudo apt-get install nodejs
+sudo apt-get -y install nodejs
 
-# chef
-cd /tmp/
-wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/11.04/x86_64/chef_10.26.0-1.ubuntu.11.04_amd64.deb
-sudo dpkg -i *.deb
-cd - 
+curl -L https://www.opscode.com/chef/install.sh | sudo bash
+sed -i s/Resource\.const_defined\?\(class_name,.*\)/Resource\.const_defined\?\(class_name\)/ /opt/chef/embedded/lib/ruby/gems/1.9.1/gems/chef-11.4.4/lib/chef/resource/lwrp_base.rb
 
-# ruby 
-curl https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer | bash -s stable
-echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc
-source ~/.bashrc
-rvm 1.9.3 do gem install sass compass --no-ri --no-rdoc
+sudo apt-get install -y ruby1.9.3
+
+update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.3 500\
+                      --slave   /usr/bin/ri   ri   /usr/bin/ri1.9.3\
+                      --slave   /usr/bin/irb  irb  /usr/bin/irb1.9.3\
+                      --slave   /usr/bin/erb  erb  /usr/bin/erb1.9.3\
+                      --slave   /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.3
+sudo update-alternatives --remove-all gem
+gem1.9.3 install compass sass
+
+touch /var/log/done
